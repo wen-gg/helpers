@@ -34,15 +34,15 @@ if (!function_exists('api_format')) {
     /**
      * api返回格式化 依赖 result_format
      * @param string $msg
-     * @param int $code
+     * @param string $code
      * @param mixed $data
      * @return array
      * @author mosquito <zwj1206_hi@163.com> 2020-10-21
      */
-    function api_format(string $msg = '', int $code = 0, $data = null)
+    function api_format(string $msg = '', string $code = '0', $data = null)
     {
         $result = [
-            'msg'  => $msg,
+            'msg' => $msg,
             'code' => $code,
             'data' => $data,
         ];
@@ -242,24 +242,24 @@ if (!function_exists('is_idcard')) {
     function is_idcard(string $idcard)
     {
         $idcard = strtoupper($idcard);
-        $iw     = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];
-        $code   = '10X98765432';
-        $sum    = 0;
+        $iw = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];
+        $code = '10X98765432';
+        $sum = 0;
         for ($i = 0; $i < 17; $i++) {
             $sum += intval($idcard[$i]) * $iw[$i];
         }
-        $iy  = $sum % 11;
+        $iy = $sum % 11;
         $bit = $code[$iy];
         if ($bit != $idcard[17]) {
             return false;
         }
         preg_match('/^\d{6}(\d{4})(\d{2})(\d{2})\d{2}(\d{1})[A-Za-z0-9]{1}$/', $idcard, $match);
         $birth = $match[1] . '-' . $match[2] . '-' . $match[3];
-        $sex   = intval($match[4] % 2 ? 1 : 2);
+        $sex = intval($match[4] % 2 ? 1 : 2);
         return [
             'idcard' => $idcard,
-            'birth'  => $birth,
-            'sex'    => $sex,
+            'birth' => $birth,
+            'sex' => $sex,
         ];
     }
 }
@@ -276,9 +276,9 @@ if (!function_exists('num_random')) {
         if ($length < 1) {
             return false;
         }
-        $len    = 8;
-        $multi  = floor($length / $len);
-        $mol    = $length % $len;
+        $len = 8;
+        $multi = floor($length / $len);
+        $mol = $length % $len;
         $result = '';
         if ($multi > 0) {
             while ($multi--) {
@@ -311,9 +311,9 @@ if (!function_exists('str_random')) {
             'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
             'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
         ];
-        $chars    = $chars_arr[$model] ?? $chars_arr[0];
+        $chars = $chars_arr[$model] ?? $chars_arr[0];
         $rand_max = strlen($chars) - 1;
-        $result   = '';
+        $result = '';
         for ($i = 0; $i < $length; $i++) {
             $result .= $chars[mt_rand(0, $rand_max)];
         }
@@ -350,7 +350,7 @@ if (!function_exists('price_format')) {
      */
     function price_format($val, int $precision = 2, int $type = 0, string $unit = '￥')
     {
-        $val    = round_str($val, $precision);
+        $val = round_str($val, $precision);
         $symbol = '';
         if ($val > 0) {
             $symbol = '+';
@@ -399,20 +399,20 @@ if (!function_exists('base64_image_format')) {
         }
         //获取图片后缀
         $suffix_list = [
-            1  => 'gif', 2  => 'jpg', 3  => 'png', 4  => 'swf', 5   => 'psd',
-            6  => 'bmp', 7  => 'tiff', 8 => 'tiff', 9 => 'jpc', 10  => 'jp2',
+            1 => 'gif', 2 => 'jpg', 3 => 'png', 4 => 'swf', 5 => 'psd',
+            6 => 'bmp', 7 => 'tiff', 8 => 'tiff', 9 => 'jpc', 10 => 'jp2',
             11 => 'jpf', 12 => 'jb2', 13 => 'swc', 14 => 'aiff', 15 => 'wbmp',
             16 => 'xbm',
         ];
         $suffix = $suffix_list[$image_info[2]] ?: 'jpg';
 
         return [
-            'base64_str'   => $base64_str,
-            'image_str'    => $image_str,
+            'base64_str' => $base64_str,
+            'image_str' => $image_str,
             'image_suffix' => $suffix,
-            'image_w'      => $image_info[0],
-            'image_h'      => $image_info[1],
-            'image_size'   => strlen($image_str),
+            'image_w' => $image_info[0],
+            'image_h' => $image_info[1],
+            'image_size' => strlen($image_str),
         ];
     }
 }
@@ -462,25 +462,25 @@ if (!function_exists('spec_format')) {
         //
         $spec_arr = [];
         foreach ($matches[2] as $key => $value) {
-            $spec_id        = $key;
+            $spec_id = $key;
             $spec_value_str = $matches[3][$key];
             //
             $spec_values_func = function () use ($spec_id, $spec_value_str) {
                 $spec_value_arr = explode(',', $spec_value_str);
-                $spec_values    = [];
+                $spec_values = [];
                 foreach ($spec_value_arr as $key => $value) {
                     $spec_value_id = $key;
                     $spec_values[] = [
-                        'spec_id'       => $spec_id,
+                        'spec_id' => $spec_id,
                         'spec_value_id' => $spec_value_id,
-                        'spec_value'    => $value,
+                        'spec_value' => $value,
                     ];
                 }
                 return $spec_values;
             };
             $spec_arr[] = [
-                'spec_id'     => $spec_id,
-                'spec_name'   => $value,
+                'spec_id' => $spec_id,
+                'spec_name' => $value,
                 'spec_values' => $spec_values_func(),
             ];
         }
@@ -489,14 +489,14 @@ if (!function_exists('spec_format')) {
             $first = array_shift($spec_arr);
             if ($first) {
                 foreach ($first['spec_values'] as $value) {
-                    $value['key']    = implode(':', [$value['spec_id'], $value['spec_value_id']]);
-                    $new_group_arr   = $group;
+                    $value['key'] = implode(':', [$value['spec_id'], $value['spec_value_id']]);
+                    $new_group_arr = $group;
                     $new_group_arr[] = $value;
                     if ($spec_arr) {
                         $group_spec_func($spec_arr, $back_arr, $new_group_arr);
                     } else {
                         $back_arr[] = [
-                            'key'  => implode('-', array_column($new_group_arr, 'key')),
+                            'key' => implode('-', array_column($new_group_arr, 'key')),
                             'name' => implode('-', array_column($new_group_arr, 'spec_value')),
                         ];
                     }
@@ -505,8 +505,8 @@ if (!function_exists('spec_format')) {
         };
         $group_spec_func($spec_arr, $spec_group_arr);
         return [
-            'spec_str'       => $spec_str,
-            'spec_arr'       => $spec_arr,
+            'spec_str' => $spec_str,
+            'spec_arr' => $spec_arr,
             'spec_group_arr' => $spec_group_arr,
         ];
     }
@@ -525,7 +525,7 @@ if (!function_exists('distance_sql')) {
     function distance_sql(float $longitude = 0, float $latitude = 0, $lng_field = 'longitude', $lat_field = 'latitude')
     {
         $longitude = round($longitude, 6);
-        $latitude  = round($latitude, 6);
+        $latitude = round($latitude, 6);
         return "round(acos(sin(({$latitude} * 3.1415) / 180) * sin(({$lat_field} * 3.1415) / 180) + cos(({$latitude} * 3.1415) / 180) * cos(({$lat_field} * 3.1415) / 180) * cos( ({$longitude} * 3.1415) / 180 - ({$lng_field} * 3.1415) / 180)) * 6378.137, 3)";
     }
 }
@@ -715,24 +715,130 @@ if (!function_exists('gridview')) {
 
         //
         $dst_point_arr = [];
-        $g_w_count     = count($g_w_list);
-        $imgw          = ($bg_w - ($g_w_cmax + 1) * $distance) / $g_w_cmax;
-        $ih            = ($bg_h - ($g_w_cmax - 1) * $distance - $g_w_count * $imgw) / 2;
-        $g_w_c         = 0;
+        $g_w_count = count($g_w_list);
+        $imgw = ($bg_w - ($g_w_cmax + 1) * $distance) / $g_w_cmax;
+        $ih = ($bg_h - ($g_w_cmax - 1) * $distance - $g_w_count * $imgw) / 2;
+        $g_w_c = 0;
         foreach ($g_w_list as $key => $value) {
-            $temp_v = $value;
-            while ($temp_v--) {
-                $iw              = ($bg_w - $value * $imgw - ($value - 1) * $distance) / 2;
+            $temp_v = 0;
+            while ($temp_v < $value) {
+                $iw = ($bg_w - $value * $imgw - ($value - 1) * $distance) / 2;
                 $dst_point_arr[] = [
                     'dst_x' => $iw + $temp_v * ($imgw + $distance),
                     'dst_y' => $ih + $g_w_c * ($imgw + $distance),
                     'dst_w' => $imgw,
                     'dst_h' => $imgw,
                 ];
+                $temp_v++;
             }
             $g_w_c += 1;
         }
         return $dst_point_arr;
+    }
+}
+
+if (!function_exists('imageroundcorner')) {
+    /**
+     * 图片圆角处理
+     * @param resource|GdImage $image
+     * @param int $w
+     * @param int $h
+     * @param int $r
+     * @author mosquito <zwj1206_hi@163.com> 2021-10-13
+     */
+    function imageroundcorner($image, int $w, int $h, int $r)
+    {
+        $img = imagecreatetruecolor($w, $h);
+        imagesavealpha($img, true);
+        imagefill($img, 0, 0, imagecolorallocatealpha($img, 255, 255, 255, 127));
+        for ($x = 0; $x < $w; $x++) {
+            for ($y = 0; $y < $h; $y++) {
+                $rgb_color = imagecolorat($image, $x, $y); //获取像素索引
+                if (($x >= $r && $x <= ($w - $r)) || ($y >= $r && $y <= ($h - $r))) {
+                    //不在四角的范围内,直接画
+                    imagesetpixel($img, $x, $y, $rgb_color);
+                } else {
+                    //在四角的范围内选择画
+                    //上左
+                    $y_x = $r; //圆心X坐标
+                    $y_y = $r; //圆心Y坐标
+                    if (((($x - $y_x) * ($x - $y_x) + ($y - $y_y) * ($y - $y_y)) <= ($r * $r))) {
+                        imagesetpixel($img, $x, $y, $rgb_color);
+                    }
+                    //上右
+                    $y_x = $w - $r; //圆心X坐标
+                    $y_y = $r; //圆心Y坐标
+                    if (((($x - $y_x) * ($x - $y_x) + ($y - $y_y) * ($y - $y_y)) <= ($r * $r))) {
+                        imagesetpixel($img, $x, $y, $rgb_color);
+                    }
+                    //下左
+                    $y_x = $r; //圆心X坐标
+                    $y_y = $h - $r; //圆心Y坐标
+                    if (((($x - $y_x) * ($x - $y_x) + ($y - $y_y) * ($y - $y_y)) <= ($r * $r))) {
+                        imagesetpixel($img, $x, $y, $rgb_color);
+                    }
+                    //下右
+                    $y_x = $w - $r; //圆心X坐标
+                    $y_y = $h - $r; //圆心Y坐标
+                    if (((($x - $y_x) * ($x - $y_x) + ($y - $y_y) * ($y - $y_y)) <= ($r * $r))) {
+                        imagesetpixel($img, $x, $y, $rgb_color);
+                    }
+                }
+            }
+        }
+        return $img;
+    }
+}
+
+if (!function_exists('imagegridview')) {
+    /**
+     * 生成九宫格图片
+     * @param array $img_arr 图片资源路径
+     * @param int $size 图片大小
+     * @param int $distance 小图间距
+     * @param int $radius 小图圆角半径
+     * @author mosquito <zwj1206_hi@163.com> 2021-10-13
+     */
+    function imagegridview(array $img_arr, int $size = 640, int $distance = 16, int $radius = 8)
+    {
+        //生成九宫格坐标
+        $point_arr = gridview(count($img_arr), $size, $distance);
+        if ($point_arr === false) {
+            throw new \Exception('生成九宫格坐标失败');
+        }
+        //背景画布
+        $bg_image = imagecreatetruecolor($size, $size);
+        if ($bg_image === false) {
+            throw new \Exception('创建背景画布失败');
+        }
+        imagefill($bg_image, 0, 0, imagecolorallocatealpha($bg_image, 242, 242, 242, 0));
+        //拼装图片
+        foreach ($img_arr as $key => $imgurl) {
+            $image_str = file_get_contents($imgurl);
+            if ($image_str === false) {
+                continue;
+            }
+            $base64_str = base64_encode($image_str);
+            $image_info = base64_image_format($base64_str);
+            if (!$image_info) {
+                continue;
+            }
+            $func = 'imagecreatefrom' . ($image_info['image_suffix'] == 'jpg' ? 'jpeg' : $image_info['image_suffix']);
+            if (!function_exists($func)) {
+                continue;
+            }
+            $imgres = @$func($imgurl);
+            if ($imgres === false) {
+                continue;
+            }
+            if ($radius > 0) {
+                $imgres = imageroundcorner($imgres, $image_info['image_w'], $image_info['image_h'], $radius);
+            }
+            $dst_point = array_shift($point_arr);
+            imagecopyresampled($bg_image, $imgres, $dst_point['dst_x'], $dst_point['dst_y'], 0, 0, $dst_point['dst_w'], $dst_point['dst_h'], $image_info['image_w'], $image_info['image_h']);
+            imagedestroy($imgres);
+        }
+        return $bg_image;
     }
 }
 
