@@ -120,6 +120,7 @@ if (!function_exists('array_combine_all')) {
                 }
             }
         };
+        $result = [];
         $func($arr, $into, $result);
         return $result;
     }
@@ -503,6 +504,7 @@ if (!function_exists('spec_format')) {
                 }
             }
         };
+        $spec_group_arr = [];
         $group_spec_func($spec_arr, $spec_group_arr);
         return [
             'spec_str' => $spec_str,
@@ -853,5 +855,51 @@ if (!function_exists('mobile_encode')) {
     function mobile_encode(string $mobile)
     {
         return substr_replace($mobile, '****', 3, 4);
+    }
+}
+
+if (!function_exists('combine_page')) {
+    /**
+     * 获取指定数量组合分页信息
+     * @param int $page
+     * @param int $limit
+     * @param array $counts
+     * @author mosquito <zwj1206_hi@163.com> 2022-06-02
+     */
+    function combine_page(int $page, int $limit, array $counts)
+    {
+        $page < 1 && $page = 1;
+        $start = ($page - 1) * $limit;
+        $end = $page * $limit - 1;
+        $pageinfo = null;
+
+        //
+        $pre = 0;
+        foreach ($counts as $key => $val) {
+            $last = $pre + $val - 1;
+            if ($pre <= $start) {
+                if ($end <= $last) {
+                    $count = ($end - $start) + 1;
+                } else {
+                    $count = ($last - $start) + 1;
+                }
+            } else {
+                if ($end <= $last) {
+                    $count = ($end - $pre) + 1;
+                } else {
+                    $count = ($last - $pre) + 1;
+                }
+            }
+            $skip = $start - $pre;
+            $skip < 0 && $skip = 0;
+            if ($count > 0) {
+                $pageinfo[$key] = [
+                    'skip' => $skip,
+                    'count' => $count,
+                ];
+            }
+            $pre = $last + 1;
+        }
+        return $pageinfo;
     }
 }
