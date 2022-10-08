@@ -431,6 +431,28 @@ if (!function_exists('xml_to_array')) {
     }
 }
 
+if (!function_exists('array_to_xml')) {
+    /**
+     * 数组转xml字符串
+     * @param array $arr
+     * @return string
+     * @author mosquito <zwj1206_hi@163.com> 2020-10-21
+     */
+    function array_to_xml(array $arr)
+    {
+        $xml = "<xml>";
+        foreach ($arr as $key => $val) {
+            if (is_numeric($val)) {
+                $xml .= "<{$key}>{$val}</{$key}>";
+            } else {
+                $xml .= "<{$key}><![CDATA[{$val}]]></{$key}>";
+            }
+        }
+        $xml .= "</xml>";
+        return $xml;
+    }
+}
+
 if (!function_exists('spec_format')) {
     /**
      * 规格格式化，请注意格式
@@ -901,5 +923,51 @@ if (!function_exists('combine_page')) {
             $pre = $last + 1;
         }
         return $pageinfo;
+    }
+}
+
+if (!function_exists('array_custom_sort')) {
+    /**
+     * 自定义数组排序（包含多维）
+     * @param array $arr
+     * @param string $func 支持部分函数，例如:sort,ksort,rsort,krsort
+     * @author mosquito <zwj1206_hi@163.com>
+     */
+    function array_custom_sort(array $arr, string $func = 'ksort')
+    {
+        $sort = function (array &$arr) use (&$sort, $func) {
+            $func($arr);
+            foreach ($arr as &$value) {
+                if (is_array($value)) {
+                    $sort($value);
+                }
+            }
+        };
+        $sort($arr);
+        return $arr;
+    }
+}
+
+if (!function_exists('rsa_private_key_format')) {
+    /**
+     * rsa私钥格式化
+     * @param string $private_key
+     * @author mosquito <zwj1206_hi@163.com>
+     */
+    function rsa_private_key_format(string $private_key)
+    {
+        return "-----BEGIN RSA PRIVATE KEY-----\n" . wordwrap($private_key, 64, "\n", true) . "\n-----END RSA PRIVATE KEY-----";
+    }
+}
+
+if (!function_exists('rsa_public_key_format')) {
+    /**
+     * rsa公钥格式化
+     * @param string $public_key
+     * @author mosquito <zwj1206_hi@163.com>
+     */
+    function rsa_public_key_format(string $public_key)
+    {
+        return "-----BEGIN PUBLIC KEY-----\n" . wordwrap($public_key, 64, "\n", true) . "\n-----END PUBLIC KEY-----";
     }
 }
