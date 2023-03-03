@@ -5,7 +5,7 @@ if (!function_exists('result_format')) {
      * 格式化成友好的返回值
      * @param mixed $data
      * @return mixed
-     * @author mosquito <zwj1206_hi@163.com> 2020-10-21
+     * @author mosquito <zwj1206_hi@163.com>
      */
     function result_format($data = null)
     {
@@ -37,7 +37,7 @@ if (!function_exists('api_format')) {
      * @param string $code
      * @param mixed $data
      * @return array
-     * @author mosquito <zwj1206_hi@163.com> 2020-10-21
+     * @author mosquito <zwj1206_hi@163.com>
      */
     function api_format(string $msg = '', string $code = '0', $data = null)
     {
@@ -57,7 +57,7 @@ if (!function_exists('trim_all')) {
      * @param string $str
      * @param mixed $search
      * @return string
-     * @author mosquito <zwj1206_hi@163.com> 2020-10-21
+     * @author mosquito <zwj1206_hi@163.com>
      */
     function trim_all(string $str, $search = null)
     {
@@ -73,7 +73,7 @@ if (!function_exists('array_filter_values')) {
      * @param mixed $callback
      * @param int $flag
      * @return array
-     * @author mosquito <zwj1206_hi@163.com> 2020-10-21
+     * @author mosquito <zwj1206_hi@163.com>
      */
     function array_filter_values($arr, $callback = null, $flag = 0)
     {
@@ -103,7 +103,7 @@ if (!function_exists('array_combine_all')) {
      * @param array $arr
      * @param array $into
      * @return array
-     * @author mosquito <zwj1206_hi@163.com> 2020-10-21
+     * @author mosquito <zwj1206_hi@163.com>
      */
     function array_combine_all(array $arr, array $into = [])
     {
@@ -134,7 +134,7 @@ if (!function_exists('is_json')) {
      * @param int $depth
      * @param int $options
      * @return mixed
-     * @author mosquito <zwj1206_hi@163.com> 2020-10-21
+     * @author mosquito <zwj1206_hi@163.com>
      */
     function is_json($json, bool $assoc = false, int $depth = 512, int $options = 0)
     {
@@ -157,7 +157,7 @@ if (!function_exists('is_mobile')) {
      * 是否是手机号
      * @param string $mobile
      * @return bool
-     * @author mosquito <zwj1206_hi@163.com> 2020-10-21
+     * @author mosquito <zwj1206_hi@163.com>
      */
     function is_mobile(string $mobile)
     {
@@ -173,7 +173,7 @@ if (!function_exists('is_phone')) {
      * 是否是联系电话
      * @param string $phone
      * @return bool
-     * @author mosquito <zwj1206_hi@163.com> 2020-10-21
+     * @author mosquito <zwj1206_hi@163.com>
      */
     function is_phone(string $phone)
     {
@@ -189,7 +189,7 @@ if (!function_exists('is_url')) {
      * 是否是合法网址
      * @param string $url
      * @return bool
-     * @author mosquito <zwj1206_hi@163.com> 2020-10-21
+     * @author mosquito <zwj1206_hi@163.com>
      */
     function is_url(string $url)
     {
@@ -205,7 +205,7 @@ if (!function_exists('is_email')) {
      * 是否是合法邮箱
      * @param string $email
      * @return bool
-     * @author mosquito <zwj1206_hi@163.com> 2020-12-03
+     * @author mosquito <zwj1206_hi@163.com>
      */
     function is_email(string $email)
     {
@@ -222,7 +222,7 @@ if (!function_exists('is_int_multi')) {
      * @param float $num
      * @param int $unit
      * @return bool
-     * @author mosquito <zwj1206_hi@163.com> 2020-10-21
+     * @author mosquito <zwj1206_hi@163.com>
      */
     function is_int_multi(float $num, int $unit = 100)
     {
@@ -238,24 +238,18 @@ if (!function_exists('is_idcard')) {
      * 是否是身份证信息，是则返回格式后数据
      * @param string $idcard
      * @return bool|array
-     * @author mosquito <zwj1206_hi@163.com> 2020-10-21
+     * @author mosquito <zwj1206_hi@163.com>
      */
     function is_idcard(string $idcard)
     {
-        $idcard = strtoupper($idcard);
-        $iw = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];
-        $code = '10X98765432';
-        $sum = 0;
-        for ($i = 0; $i < 17; $i++) {
-            $sum += intval($idcard[$i]) * $iw[$i];
-        }
-        $iy = $sum % 11;
-        $bit = $code[$iy];
-        if ($bit != $idcard[17]) {
+        if (strlen($idcard) != 18) {
             return false;
         }
-        preg_match('/^\d{6}(\d{4})(\d{2})(\d{2})\d{2}(\d{1})[A-Za-z0-9]{1}$/', $idcard, $match);
-        $birth = $match[1] . '-' . $match[2] . '-' . $match[3];
+        $temp = preg_match('/^[1-9]\d{5}((?:18|19|20)\d{2})((?:0[1-9]|10|11|12))((?:0[1-9]|[1-2]\d|30|31))\d{2}(\d{1})[\dXx]$/', $idcard, $match);
+        if (!$temp) {
+            return false;
+        }
+        $birth = implode('-', [$match[1], $match[2], $match[3]]);
         $sex = intval($match[4] % 2 ? 1 : 2);
         return [
             'idcard' => $idcard,
@@ -270,7 +264,7 @@ if (!function_exists('num_random')) {
      * 数字随机
      * @param int $length
      * @return false|string
-     * @author mosquito <zwj1206_hi@163.com> 2020-10-21
+     * @author mosquito <zwj1206_hi@163.com>
      */
     function num_random(int $length = 6)
     {
@@ -283,11 +277,11 @@ if (!function_exists('num_random')) {
         $result = '';
         if ($multi > 0) {
             while ($multi--) {
-                $result .= str_pad(mt_rand(1, pow(10, $len) - 1), $len, '0', STR_PAD_LEFT);
+                $result .= str_pad(random_int(1, pow(10, $len) - 1), $len, '0', STR_PAD_LEFT);
             }
         }
         if ($mol > 0) {
-            $result .= str_pad(mt_rand(1, pow(10, $mol) - 1), $mol, '0', STR_PAD_LEFT);
+            $result .= str_pad(random_int(1, pow(10, $mol) - 1), $mol, '0', STR_PAD_LEFT);
         }
         return $result;
     }
@@ -299,7 +293,7 @@ if (!function_exists('str_random')) {
      * @param int $length
      * @param int $model 可选: 0,1,2,3
      * @return false|string
-     * @author mosquito <zwj1206_hi@163.com> 2020-10-21
+     * @author mosquito <zwj1206_hi@163.com>
      */
     function str_random(int $length = 6, int $model = 0)
     {
@@ -316,7 +310,7 @@ if (!function_exists('str_random')) {
         $rand_max = strlen($chars) - 1;
         $result = '';
         for ($i = 0; $i < $length; $i++) {
-            $result .= $chars[mt_rand(0, $rand_max)];
+            $result .= $chars[random_int(0, $rand_max)];
         }
         return $result;
     }
@@ -330,7 +324,7 @@ if (!function_exists('round_str')) {
      * @param bool $symbol
      * @param int $mode
      * @return string
-     * @author mosquito <zwj1206_hi@163.com> 2020-10-21
+     * @author mosquito <zwj1206_hi@163.com>
      */
     function round_str($val, int $precision = 2, bool $symbol = false, int $mode = PHP_ROUND_HALF_UP)
     {
@@ -347,7 +341,7 @@ if (!function_exists('price_format')) {
      * @param int $type
      * @param string $unit
      * @return string
-     * @author mosquito <zwj1206_hi@163.com> 2020-10-21
+     * @author mosquito <zwj1206_hi@163.com>
      */
     function price_format($val, int $precision = 2, int $type = 0, string $unit = '￥')
     {
@@ -385,7 +379,7 @@ if (!function_exists('base64_image_format')) {
      * base64图片信息格式化
      * @param string $base64_str
      * @return false|array
-     * @author mosquito <zwj1206_hi@163.com> 2020-10-21
+     * @author mosquito <zwj1206_hi@163.com>
      */
     function base64_image_format(string $base64_str)
     {
@@ -423,7 +417,7 @@ if (!function_exists('xml_to_array')) {
      * xml字符串转数组
      * @param string $str
      * @return array
-     * @author mosquito <zwj1206_hi@163.com> 2020-10-21
+     * @author mosquito <zwj1206_hi@163.com>
      */
     function xml_to_array(string $str)
     {
@@ -436,7 +430,7 @@ if (!function_exists('array_to_xml')) {
      * 数组转xml字符串
      * @param array $arr
      * @return string
-     * @author mosquito <zwj1206_hi@163.com> 2020-10-21
+     * @author mosquito <zwj1206_hi@163.com>
      */
     function array_to_xml(array $arr)
     {
@@ -459,7 +453,7 @@ if (!function_exists('spec_format')) {
      * 例：颜色：黑色，白色，红色；大小：32GB，64GB，128GB
      * @param string $str
      * @return array|false
-     * @author mosquito <zwj1206_hi@163.com> 2020-10-21
+     * @author mosquito <zwj1206_hi@163.com>
      */
     function spec_format(string $str)
     {
@@ -544,7 +538,7 @@ if (!function_exists('distance_sql')) {
      * @param string $lng_field
      * @param string $lat_field
      * @return string
-     * @author mosquito <zwj1206_hi@163.com> 2020-10-21
+     * @author mosquito <zwj1206_hi@163.com>
      */
     function distance_sql(float $longitude = 0, float $latitude = 0, $lng_field = 'longitude', $lat_field = 'latitude')
     {
@@ -562,7 +556,7 @@ if (!function_exists('list_to_tree')) {
      * @param string $pid
      * @param string $children
      * @return array
-     * @author mosquito <zwj1206_hi@163.com> 2020-10-21
+     * @author mosquito <zwj1206_hi@163.com>
      */
     function list_to_tree(array $items, string $id = 'id', string $pid = 'parent_id', string $children = 'children')
     {
@@ -590,7 +584,7 @@ if (!function_exists('tree_to_list')) {
      * @param array $tree
      * @param string $children
      * @return array
-     * @author mosquito <zwj1206_hi@163.com> 2020-10-21
+     * @author mosquito <zwj1206_hi@163.com>
      */
     function tree_to_list(array $tree, string $children = 'children')
     {
@@ -616,7 +610,7 @@ if (!function_exists('base64_urlencode')) {
      * base64_urlencode
      * @param string $str
      * @return string
-     * @author mosquito <zwj1206_hi@163.com> 2020-10-21
+     * @author mosquito <zwj1206_hi@163.com>
      */
     function base64_urlencode(string $str)
     {
@@ -629,7 +623,7 @@ if (!function_exists('base64_urldecode')) {
      * base64_urldecode
      * @param string $str
      * @return string|false
-     * @author mosquito <zwj1206_hi@163.com> 2020-10-21
+     * @author mosquito <zwj1206_hi@163.com>
      */
     function base64_urldecode(string $str)
     {
@@ -642,7 +636,7 @@ if (!function_exists('split_name')) {
      * 分割姓名
      * @param string $name
      * @return bool|array
-     * @author mosquito <zwj1206_hi@163.com> 2020-10-21
+     * @author mosquito <zwj1206_hi@163.com>
      */
     function split_name(string $name)
     {
@@ -712,7 +706,7 @@ if (!function_exists('gridview')) {
      * @param int $size
      * @param int $distance
      * @return array|false
-     * @author mosquito <zwj1206_hi@163.com> 2020-10-21
+     * @author mosquito <zwj1206_hi@163.com>
      */
     function gridview(int $grid_count = 9, int $size = 640, int $distance = 16)
     {
@@ -768,7 +762,7 @@ if (!function_exists('imageroundcorner')) {
      * @param int $w
      * @param int $h
      * @param int $r
-     * @author mosquito <zwj1206_hi@163.com> 2021-10-13
+     * @author mosquito <zwj1206_hi@163.com>
      */
     function imageroundcorner($image, int $w, int $h, int $r)
     {
@@ -821,7 +815,7 @@ if (!function_exists('imagegridview')) {
      * @param int $size 图片大小
      * @param int $distance 小图间距
      * @param int $radius 小图圆角半径
-     * @author mosquito <zwj1206_hi@163.com> 2021-10-13
+     * @author mosquito <zwj1206_hi@163.com>
      */
     function imagegridview(array $img_arr, int $size = 640, int $distance = 16, int $radius = 8)
     {
@@ -872,7 +866,7 @@ if (!function_exists('mobile_encode')) {
      * 手机号加密
      * @param string $mobile
      * @return string
-     * @author mosquito <zwj1206_hi@163.com> 2021-01-28
+     * @author mosquito <zwj1206_hi@163.com>
      */
     function mobile_encode(string $mobile)
     {
@@ -886,7 +880,7 @@ if (!function_exists('combine_page')) {
      * @param int $page
      * @param int $limit
      * @param array $counts
-     * @author mosquito <zwj1206_hi@163.com> 2022-06-02
+     * @author mosquito <zwj1206_hi@163.com>
      */
     function combine_page(int $page, int $limit, array $counts)
     {
@@ -931,7 +925,7 @@ if (!function_exists('array_custom_sort')) {
      * 自定义数组排序（包含多维）
      * @param array $arr
      * @param string $func 支持部分函数，例如:sort,ksort,rsort,krsort
-     * @author mosquito <zwj1206_hi@163.com>
+     * @author mosquito <zwj1206_hi@163.com
      */
     function array_custom_sort(array $arr, string $func = 'ksort')
     {
@@ -952,7 +946,7 @@ if (!function_exists('rsa_private_key_format')) {
     /**
      * rsa私钥格式化
      * @param string $private_key
-     * @author mosquito <zwj1206_hi@163.com>
+     * @author mosquito <zwj1206_hi@163.com
      */
     function rsa_private_key_format(string $private_key)
     {
@@ -964,7 +958,7 @@ if (!function_exists('rsa_public_key_format')) {
     /**
      * rsa公钥格式化
      * @param string $public_key
-     * @author mosquito <zwj1206_hi@163.com>
+     * @author mosquito <zwj1206_hi@163.com
      */
     function rsa_public_key_format(string $public_key)
     {
